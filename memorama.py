@@ -3,9 +3,14 @@ from turtle import *
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
-state = {'mark': None, 'taps': 0, 'gameover': False}  # Variable taps added and variable gameover added
+tiles = ['!', '@', '#', '$', '%', '&', '*', '+', '-', '/', '=', '?', '^', '_', '~', '(', ')', '[', ']', '{', '}', '<',
+         '>', '|', '.', ',', ';', ':', '°', '¿', '°',
+         '¡'] * 2  # Change the list to use something different from digits.
+print(len(tiles))
+
+state = {'mark': None, 'taps': 0, 'gameover': False}
 hide = [True] * 64
+
 
 def square(x, y):
     "Draw white square with black outline at (x, y)."
@@ -19,17 +24,20 @@ def square(x, y):
         left(90)
     end_fill()
 
+
 def index(x, y):
     "Convert (x, y) coordinates to tiles index."
     return int((x + 200) // 50 + ((y + 200) // 50) * 8)
+
 
 def xy(count):
     "Convert tiles count to (x, y) coordinates."
     return (count % 8) * 50 - 200, (count // 8) * 50 - 200
 
+
 def tap(x, y):
     "Update mark and hidden tiles based on tap."
-    state['taps'] += 1 # Counter added
+    state['taps'] += 1
     spot = index(x, y)
     mark = state['mark']
 
@@ -39,8 +47,9 @@ def tap(x, y):
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
-    if all(not h for h in hide): # Evaluate if marks is or not evaluated, if it is, change gameover to True
+    if all(not h for h in hide):
         state['gameover'] = True
+
 
 def draw():
     "Draw image and tiles."
@@ -59,11 +68,11 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 25, y+3) # Adjust pixel to align the tiles. 
+        goto(x + 25, y + 3)
         color('black')
-        write(tiles[mark], align='center', font=('Arial', 30, 'normal')) # Add aling to center the tiles
-    
-    if state['gameover']:   # Draw game over
+        write(tiles[mark], align='center', font=('Arial', 30, 'normal'))
+
+    if state['gameover']:
         up()
         goto(0, 0)
         color('black')
@@ -71,11 +80,11 @@ def draw():
 
     update()
     ontimer(draw, 100)
-    taps = state['taps'] # Create variable
+    taps = state['taps']
     up()
-    goto(0, -190)  # Position of the draw
+    goto(0, -190)
     color('black')
-    write(f'Taps: {taps}', align='center', font=('Arial', 16, 'normal')) # Draw actual value of counter
+    write(f'Taps: {taps}', align='center', font=('Arial', 16, 'normal'))
 
 
 shuffle(tiles)
